@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - "*"
+      - "!**-alpha**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
+      CF_API_KEY: ${{ secrets.CF_API_KEY }}
+    steps:
+      - name: Clone project
+        uses: actions/checkout@v1
+
+      - name: Create Retail Package
+        uses: BigWigsMods/packager@v1
+        with:
+          args: -p 288981 -L -m pkgmeta.yaml
